@@ -2,6 +2,9 @@ require("dotenv").config();
 
 var keys = require('./keys.js');
 var request = require('request');
+var moment = require('moment');
+var Spotify = require('node-spotify-api');
+
 
 // var spotify = new Spotify(keys.spotify);
 
@@ -22,19 +25,26 @@ function callBandsTown() {
   // If the request is successful (i.e. if the response status code is 200)
   if (!error && response.statusCode === 200) {
     var eventsArr = JSON.parse(body);
-  	// console.log("-----------------")
-  	console.log("-----------------")
-  	
+	
   	eventsArr.forEach(function(event) {
       console.log('This event is at: ' + event.venue.name)
       console.log('The location of the venue is in ' +  event.venue.city + ', ' + event.venue.country);
-      console.log('Time of event: ' +  event.datetime)
+      console.log('Time of event: ' +  moment(event.datetime).format('MM/DD/YYYY'));
     })
-  	console.log("-----------------")
   }
 });
 }
 
+function callSpotify() {
+  var spotify = new Spotify(keys.spotify);
+  spotify.search({ type: 'track', query: searchParams }, function(err, data) {
+    if (err) {
+      return console.log('Error occurred: ' + err);
+    }
+  
+  console.log(data); 
+  });
+}
 
 
 //check liriCommand against list of possible commands
@@ -42,6 +52,7 @@ function checkCommand(intendedCommand) {
   var validCommand;
   if (intendedCommand === concert) {
     validCommand = true;
+    callBandsTown();
   } else if (intendedCommand === spotify) {
     validCommand = true;
   } else if (intendedCommand === movie) {
@@ -57,7 +68,7 @@ function checkCommand(intendedCommand) {
 }
 
 checkCommand(liriCommand);
-callBandsTown();
+callSpotify();
 
   //if valid command perfom associated task
   // function getTask(input) {
@@ -66,3 +77,5 @@ callBandsTown();
   //   }
   // }
 
+
+  
