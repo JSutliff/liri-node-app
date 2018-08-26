@@ -75,10 +75,6 @@ function callTxt() {
     if (error) {
       return console.log(error);
     }
-  
-    // We will then print the contents of data (a single string)
-    console.log(data);
-  
     // Then split it by commas (to make it more readable)
     var dataArr = data.split(",");
   
@@ -86,7 +82,6 @@ function callTxt() {
     liriCommand = dataArr[0];
     searchParams = dataArr[1];
     return checkCommand(liriCommand);
-  
   });
 }
 
