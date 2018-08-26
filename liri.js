@@ -4,9 +4,7 @@ var keys = require('./keys.js');
 var request = require('request');
 var moment = require('moment');
 var Spotify = require('node-spotify-api');
-
-
-// var spotify = new Spotify(keys.spotify);
+var fs = require("fs");
 
 var userInput = process.argv.splice(2);
 
@@ -64,6 +62,28 @@ function callOmdb() {
 });
 }
 
+function callTxt() {
+  fs.readFile("random.txt", "utf8", function(error, data) {
+
+    // If the code experiences any errors it will log the error to the console.
+    if (error) {
+      return console.log(error);
+    }
+  
+    // We will then print the contents of data (a single string)
+    console.log(data);
+  
+    // Then split it by commas (to make it more readable)
+    var dataArr = data.split(",");
+  
+    // We will then re-display the content as an array for later use.
+    liriCommand = dataArr[0];
+    searchParams = dataArr[1];
+    return checkCommand(liriCommand);
+  
+  });
+}
+
 //check liriCommand against list of possible commands
 function checkCommand(intendedCommand) {
   var validCommand;
@@ -78,6 +98,8 @@ function checkCommand(intendedCommand) {
     callOmdb();
   } else if (intendedCommand === doWhat) {
     validCommand = true;
+    callTxt();
+    
   } else {
     validCommand = false;
     console.log('Invalid Command');
