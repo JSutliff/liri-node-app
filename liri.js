@@ -1,22 +1,25 @@
+//requirements
 require("dotenv").config();
-
 var keys = require('./keys.js');
 var request = require('request');
 var moment = require('moment');
 var Spotify = require('node-spotify-api');
 var fs = require("fs");
 
+//separate user input from first args of argv
 var userInput = process.argv.splice(2);
 
+//separate command from search inputs
 var liriCommand = userInput[0];
 var searchParams = userInput.splice(1).map(elem => elem.toLocaleLowerCase()).join('+');
 
+//command variables 
 var concert = 'concert-this';
 var spotify = 'spotify-this-song';
 var movie = 'movie-this';
 var doWhat = 'do-what-it-says';
 
-//call appropriate APIs
+//function that makes a request to bandsInTown and returns required information
 function callBandsTown() {
   request("https://rest.bandsintown.com/artists/" + searchParams + "/events?app_id=codingbootcamp", function(error, response, body) {
 
@@ -33,6 +36,7 @@ function callBandsTown() {
 });
 }
 
+//function that makes a request to spotify and returns required information
 function callSpotify() {
   var spotify = new Spotify(keys.spotify);
   spotify.search({ type: 'track', query: searchParams }, function(err, data) {
@@ -44,6 +48,7 @@ function callSpotify() {
   });
 }
 
+//function that makes a request to OMDB and returns required information
 function callOmdb() {
   request("http://www.omdbapi.com/?apikey=trilogy&t=" + searchParams, function(error, response, body) {
 
@@ -62,6 +67,7 @@ function callOmdb() {
 });
 }
 
+//function that makes a request to random.txt and returns required information
 function callTxt() {
   fs.readFile("random.txt", "utf8", function(error, data) {
 
@@ -76,7 +82,7 @@ function callTxt() {
     // Then split it by commas (to make it more readable)
     var dataArr = data.split(",");
   
-    // We will then re-display the content as an array for later use.
+    //assign command and search based on contents of random.txt
     liriCommand = dataArr[0];
     searchParams = dataArr[1];
     return checkCommand(liriCommand);
@@ -84,7 +90,7 @@ function callTxt() {
   });
 }
 
-//check liriCommand against list of possible commands
+//check liriCommand against list of possible commands and call corresponding API
 function checkCommand(intendedCommand) {
   var validCommand;
   if (intendedCommand === concert) {
@@ -108,15 +114,9 @@ function checkCommand(intendedCommand) {
   return validCommand;
 }
 
+//function call to check user command and run program 
 checkCommand(liriCommand);
 
-
-  //if valid command perfom associated task
-  // function getTask(input) {
-  //   if (checkCommand(input) && input === concert) {
-
-  //   }
-  // }
 
 
   
