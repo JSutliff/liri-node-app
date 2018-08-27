@@ -44,7 +44,7 @@ function callSpotify() {
       return console.log('Error occurred: ' + err);
     }
   
-  console.log(data); 
+  console.log(data.tracks.items[0].album.artists); 
   });
 }
 
@@ -111,7 +111,6 @@ function checkCommand(intendedCommand) {
 
 //function call to check user command and run program 
 checkCommand(liriCommand);
-
 
 
   
