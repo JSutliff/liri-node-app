@@ -28,9 +28,11 @@ function callBandsTown() {
     var eventsArr = JSON.parse(body);
 	
   	eventsArr.forEach(function(event) {
-      console.log('This event is at: ' + event.venue.name)
-      console.log('The location of the venue is in ' +  event.venue.city + ', ' + event.venue.country);
-      console.log('Time of event: ' +  moment(event.datetime).format('MM/DD/YYYY'));
+      console.log(`    -============= Event Results =========================-
+      This event is at: ${event.venue.name}
+      The location of the venue is in ${event.venue.city}, ${event.venue.country}
+      Time of event: ${moment(event.datetime).format('MM/DD/YYYY')}
+      -=====================================================-`);
     })
   }
 });
@@ -43,8 +45,13 @@ function callSpotify() {
     if (err) {
       return console.log('Error occurred: ' + err);
     }
-  
-  console.log(data.tracks.items[0].album.artists); 
+
+    console.log(`    -============= Song Results =========================-
+    Artist(s): ${data.tracks.items[0].artists[0].name}
+    Song Name: ${data.tracks.items[0].name}
+    Spotify Preview Link: ${data.tracks.items[0].artists[0].external_urls.spotify}
+    Album: ${data.tracks.items[0].album.name}
+    -=====================================================-`);
   });
 }
 
@@ -55,14 +62,17 @@ function callOmdb() {
   // If the request is successful (i.e. if the response status code is 200)
   if (!error && response.statusCode === 200) {
     var movieObj = JSON.parse(body);
-    console.log('The title of the movie is: ' + movieObj.Title);
-    console.log('This movie was released in: ' + movieObj.Year);
-    console.log('The IMDB Rating of the movie is: ' + movieObj.imdbRating);
-    console.log('The Rotten Tomatoes Rating of the movie is: ' + movieObj.Ratings[1]);
-    console.log('This movie was produced in: ' + movieObj.Country);
-    console.log('This movie is in: ' + movieObj.Language);
-    console.log('The plot of the movie is: ' + movieObj.Plot);
-    console.log('Actors: ' + movieObj.Actors);
+
+    console.log(`    -============= Movie Results =========================-
+    The title of the movie is: ${movieObj.Title}
+    This movie was released in: ${movieObj.Year}
+    The IMDB Rating of the movie is: ${movieObj.imdbRating}
+    The Rotten Tomatoes Rating of the movie is: ${movieObj.Ratings[1]}
+    This movie was produced in: ${movieObj.Country}
+    This movie is in: ${movieObj.Language}
+    The plot of the movie is: ${movieObj.Plot}
+    Actors: ${movieObj.Actors}
+    -=====================================================-`);
   }
 });
 }
